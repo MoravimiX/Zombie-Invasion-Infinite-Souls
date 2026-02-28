@@ -1,0 +1,1694 @@
+/* 全局样式重置：清除默认边距和内边距 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* 使用边框盒模型，便于布局计算 */
+}
+
+/* 页面主体样式：设置背景和基本布局 */
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('grass.png'); /* 草坪背景 */
+    background-size: cover;
+    background-repeat: repeat;
+    min-height: 100vh; /* 最小高度为视窗高度 */
+    overflow: hidden;   /* 隐藏滚动条，创建全屏游戏体验 */
+}
+
+/* 游戏主容器：占满整个视窗的弹性布局容器 */
+.game-container {
+    width: 100vw;  /* 宽度为视窗宽度 */
+    height: 100vh; /* 高度为视窗高度 */
+    display: flex;
+    flex-direction: column; /* 垂直排列子元素 */
+    background: url('background.png'); /* 草坪背景 */
+    background-size: cover;
+    background-repeat: repeat;
+}
+
+/* 游戏头部：显示游戏信息和控制按钮的顶部区域 */
+.game-header {
+    display: flex;
+    justify-content: space-between; /* 左右分布对齐 */
+    align-items: center;           /* 垂直居中对齐 */
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.1); /* 半透明白色背景 */
+    border-bottom: 2px solid #4CAF50;     /* 绿色底边框 */
+}
+
+/* 阳光计数器：显示当前阳光数量的金色按钮样式 */
+.sun-counter {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(45deg, #FFD700, #FFA500); /* 金色渐变背景 */
+    padding: 8px 15px;
+    border-radius: 20px;        /* 圆角边框 */
+    font-size: 18px;
+    font-weight: bold;
+    color: #8B4513;             /* 深棕色文字 */
+    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4); /* 金色阴影效果 */
+}
+
+/* 阳光图标：阳光计数器中的太阳表情符号 */
+.sun-icon {
+    margin-right: 8px;
+    font-size: 20px;
+}
+
+/* 波次信息：显示当前波次、剩余僵尸等游戏状态 */
+.wave-info {
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff; /* 白色文字 */
+}
+
+/* 波次信息的每一行 */
+.wave-info div {
+    margin: 2px 0; /* 行间距 */
+}
+
+/* 游戏控制按钮组：包含开始、暂停、重置按钮 */
+.game-controls {
+    display: flex;
+    gap: 10px; /* 按钮间距 */
+}
+
+/* 通用按钮样式：游戏中所有按钮的基础样式 */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background: #4CAF50;        /* 绿色背景 */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease; /* 平滑过渡动画 */
+}
+
+/* 按钮悬停效果：鼠标悬停时的视觉反馈 */
+.btn:hover {
+    background: #45a049;           /* 深绿色背景 */
+    transform: translateY(-2px);   /* 向上浮起效果 */
+}
+
+/* 禁用按钮样式：不可点击状态的按钮外观 */
+.btn:disabled {
+    background: #ccc;      /* 灰色背景 */
+    cursor: not-allowed;   /* 禁止光标 */
+    transform: none;       /* 取消浮起效果 */
+}
+
+/* 隐藏元素：用于动态显示/隐藏界面元素 */
+.hidden {
+    display: none !important; /* 强制隐藏，优先级最高 */
+}
+
+/* 植物选择栏：玩家选择植物的水平滚动区域 */
+.plant-selector {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2); /* 半透明白色背景 */
+    border-bottom: 2px solid #4CAF50;     /* 绿色底边框 */
+    position: relative;
+}
+
+/* 植物卡片容器：可水平滚动的植物选择区域 */
+.plant-cards-container {
+    display: flex;
+    gap: 10px;              /* 卡片间距 */
+    overflow-x: hidden;     /* 隐藏水平滚动条 */
+    scroll-behavior: smooth; /* 平滑滚动效果 */
+    flex: 1;                /* 占据剩余空间 */
+    padding: 0 10px;
+}
+
+/* 滚动按钮：用于左右滚动植物选择区域的圆形按钮 */
+.scroll-btn {
+    background: #4CAF50;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 50%;         /* 圆形按钮 */
+    cursor: pointer;
+    transition: all 0.3s ease; /* 平滑过渡动画 */
+    z-index: 10;               /* 确保按钮在最上层 */
+}
+
+/* 滚动按钮悬停效果：鼠标悬停时的放大效果 */
+.scroll-btn:hover {
+    background: #45a049;
+    transform: scale(1.1); /* 放大1.1倍 */
+}
+
+/* 禁用滚动按钮样式：不可滚动时的按钮外观 */
+.scroll-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 植物卡片：每个植物的选择卡片，包含图标、名称和费用 */
+.plant-card {
+    position: relative;
+    width: 80px;
+    height: 100px;
+    background: linear-gradient(145deg, #E8F5E8, #C8E6C9); /* 浅绿色渐变背景 */
+    border: 3px solid #4CAF50;                             /* 绿色边框 */
+    border-radius: 10px;                                   /* 圆角边框 */
+    cursor: pointer;
+    transition: all 0.3s ease;                            /* 平滑过渡动画 */
+    display: flex;
+    flex-direction: column;                                /* 垂直排列内容 */
+    align-items: center;                                   /* 水平居中 */
+    justify-content: space-between;                        /* 垂直分布对齐 */
+    padding: 5px;
+}
+
+/* 植物卡片悬停效果：鼠标悬停时的浮起和阴影效果 */
+.plant-card:hover {
+    transform: translateY(-3px);                        /* 向上浮起3像素 */
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);    /* 绿色阴影效果 */
+}
+
+/* 选中的植物卡片：当前被选择的植物卡片样式 */
+.plant-card.selected {
+    background: linear-gradient(145deg, #C8E6C9, #A5D6A7); /* 深绿色渐变背景 */
+    border-color: #2E7D32;                                  /* 深绿色边框 */
+    transform: scale(1.05);                                 /* 放大1.05倍 */
+}
+
+/* 禁用的植物卡片：阳光不足时的植物卡片样式 */
+.plant-card.disabled {
+    opacity: 0.5;              /* 半透明 */
+    cursor: not-allowed;       /* 禁止光标 */
+    filter: grayscale(50%);    /* 50%灰度滤镜 */
+}
+
+/* 冷却中的植物卡片：植物冷却期间的样式 */
+.plant-card.cooling {
+    opacity: 0.7;         /* 70%透明度 */
+    cursor: not-allowed;  /* 禁止光标 */
+}
+
+.plant-card.locked {
+    opacity: 0.35;
+    cursor: not-allowed;
+    filter: grayscale(80%);
+}
+
+.plant-card.tool-card .plant-cost {
+    color: #1b5e20;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* 植物图标：植物卡片中的PNG图片图标 */
+.plant-icon {
+    width: 32px;
+    height: 32px;
+    margin: 2px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.plant-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 植物名称：植物卡片中的中文名称 */
+.plant-name {
+    font-size: 10px;
+    font-weight: bold;
+    color: #1a871c;    /* 深绿色文字 */
+    text-align: center;
+}
+
+/* 植物费用：植物卡片中显示阳光消耗的标签 */
+.plant-cost {
+    font-size: 12px;
+    font-weight: bold;
+    color: #FF6B35;                        /* 橙色文字 */
+    background: rgba(255, 255, 255, 0.8);  /* 半透明白色背景 */
+    padding: 2px 6px;
+    border-radius: 10px;                   /* 圆角背景 */
+}
+
+/* 冷却进度条：显示植物冷却剩余时间的红色进度条 */
+.cooldown-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #f44336;           /* 红色背景 */
+    border-radius: 0 0 7px 7px;    /* 底部圆角 */
+    transform: scaleX(0);          /* 初始宽度为0 */
+    transform-origin: left;        /* 从左侧开始缩放 */
+    transition: transform 0.1s linear; /* 线性过渡动画 */
+}
+
+/* 游戏场地：主要的游戏区域，只保留草地背景 */
+.game-field {
+    flex: 1;                /* 占据剩余空间 */
+    position: relative;
+    background: url('grass.png'); /* 草坪背景 */
+    background-size: cover;
+    background-repeat: repeat;
+}
+
+/* 草坪背景：创建网格线效果，模拟草坪的行列划分 */
+.lawn-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 使用重复线性渐变创建网格效果 */
+    background-image: 
+        /* 垂直网格线：每11.111%宽度重复，对应9列布局 */
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 11.111%,
+            rgba(0, 0, 0, 0.8) 11.111%,
+            rgba(0, 0, 0, 0.8) 11.111%
+        ),
+        /* 水平网格线：每20%高度重复，对应5行布局 */
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 20%,
+            rgba(0, 0, 0, 0.8) 20%,
+            rgba(0, 0, 0, 0.8) 20%
+        );
+    z-index: 1; /* 在最底层 */
+}
+
+/* 游戏网格：5行9列的种植区域布局 */
+.game-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr); /* 9列等宽布局 */
+    grid-template-rows: repeat(5, 1fr);    /* 5行等高布局 */
+    z-index: 2;                            /* 在草坪背景之上 */
+}
+
+/* 网格单元：每个可种植的格子样式 */
+.grid-cell {
+    border: 1px solid rgba(76, 175, 80, 0.3); /* 淡绿色边框 */
+    cursor: pointer;
+    transition: background-color 0.2s ease;   /* 背景色平滑过渡 */
+    position: relative;
+}
+
+/* 网格单元悬停效果：鼠标悬停时的高亮显示 */
+.grid-cell:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* 半透明白色背景 */
+}
+
+/* 可种植网格单元：选择植物后高亮显示可种植区域 */
+.grid-cell.plantable {
+    background-color: rgba(63, 4, 79, 0.3);           /* 绿色半透明背景 */
+    border-color: #b344c9;                              /* 绿色边框 */
+    box-shadow: inset 0 0 10px rgba(174, 24, 208, 0.5); /* 内阴影效果 */
+}
+
+.grid-cell.removable {
+    background-color: rgba(255, 138, 101, 0.35);
+    border-color: #ff7043;
+    box-shadow: inset 0 0 10px rgba(255, 112, 67, 0.5);
+}
+
+.gatling-lava {
+    position: absolute;
+    inset: 0;
+    background: rgba(120, 0, 0, 0.55);
+    box-shadow: inset 0 0 14px rgba(255, 80, 80, 0.75);
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.gatling-lava img {
+    position: absolute;
+    width: 45%;
+    height: 45%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px rgba(255, 180, 120, 0.7));
+}
+
+/* 实体层：所有动态游戏对象的容器层 */
+.entities-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;            /* 在网格之上 */
+    pointer-events: none;   /* 默认不响应鼠标事件，由子元素控制 */
+}
+
+/* 游戏实体样式：植物、僵尸等游戏对象的基础样式 */
+
+/* 植物样式：种植在网格中的植物对象 */
+.plant {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    z-index: 15;                            /* 在网格之上，僵尸之下 */
+    animation: plantGrow 0.5s ease-out, plantSway 3s ease-in-out infinite 0.5s; /* 种植动画 + 摇摆动画 */
+    pointer-events: none;                   /* 不响应鼠标事件 */
+    transform: translate(-50%, -50%);       /* 确保植物以中心点定位 */
+    transform-origin: 50% 100%;             /* 设置变换原点在底部（脚下） */
+}
+
+.plant img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 植物防护罩：南瓜套等防护性植物的样式 */
+.plant-shield {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    z-index: 16;                            /* 在普通植物之上 */
+    animation: plantGrow 0.5s ease-out;     /* 种植时的生长动画 */
+    pointer-events: none;                   /* 不响应鼠标事件 */
+    transform: translate(-50%, -50%);       /* 确保防护罩以中心点定位 */
+    opacity: 0.5;                           /* 设置透明度，让被套住的植物清晰可见 */
+}
+
+.plant-shield img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 植物生长动画：植物种植时从小到大的生长效果 */
+@keyframes plantGrow {
+    0% {
+        transform: scale(0);    /* 初始大小为0 */
+        opacity: 0;             /* 初始完全透明 */
+    }
+    50% {
+        transform: scale(1.2);  /* 中间放大到1.2倍 */
+    }
+    100% {
+        transform: scale(1);    /* 最终恢复正常大小 */
+        opacity: 1;             /* 最终完全不透明 */
+    }
+}
+
+/* 植物摇摆动画：植物的持续左右摇摆效果 */
+@keyframes plantSway {
+    0%, 100% {
+        transform: translate(-50%, -50%) rotate(0deg);        /* 起始和结束：居中 + 无旋转 */
+        transform-origin: 50% 100%;                           /* 旋转中心点设在底部（脚下） */
+    }
+    25% {
+        transform: translate(-50%, -50%) rotate(2deg);        /* 居中 + 向右倾斜2度 */
+        transform-origin: 50% 100%;                           /* 旋转中心点设在底部（脚下） */
+    }
+    75% {
+        transform: translate(-50%, -50%) rotate(-2deg);       /* 居中 + 向左倾斜2度 */
+        transform-origin: 50% 100%;                           /* 旋转中心点设在底部（脚下） */
+    }
+}
+
+/* 僵尸摇摆动画：僵尸的持续左右摇摆效果 */
+@keyframes zombieSway {
+    0%, 100% {
+        transform: translate(-50%, -100%) rotate(0deg);        /* 起始和结束：居中 + 无旋转 */
+        transform-origin: 50% 100%;                           /* 旋转中心点设在底部（脚下） */
+    }
+    33% {
+        transform: translate(-50%, -100%) rotate(-1.5deg);     /* 居中 + 向左倾斜1.5度 */
+        transform-origin: 50% 100%;                           /* 旋转中心点设在底部（脚下） */
+    }
+    66% {
+        transform: translate(-50%, -100%) rotate(1.5deg);      /* 居中 + 向右倾斜1.5度 */
+        transform-origin: 50% 100%;                           /* 旋转中心点设在底部（脚下） */
+    }
+}
+
+/* 僵尸样式：从右侧进攻的僵尸对象 */
+.zombie {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    z-index: 20;                        /* 在植物之上 */
+    transition: left 0.1s linear;       /* 移动时的平滑过渡 */
+    animation: zombieSway 2.5s ease-in-out infinite; /* 持续摇摆动画 */
+    pointer-events: none;               /* 不响应鼠标事件 */
+    transform: translate(-50%, -100%);   /* 确保僵尸脚部对齐轨道 */
+    transform-origin: 50% 100%;         /* 设置变换原点在底部（脚下） */
+}
+
+.zombie img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 巨人僵尸的专属样式 */
+.gargantuar-zombie {
+    width: 250px;
+    height: 250px;
+}
+
+/* 骑士僵尸的专属样式 */
+.knight-zombie {
+    width: 180px;
+    height: 180px;
+}
+
+/* 僵尸状态样式：不同行为状态下的僵尸动画效果 */
+
+/* 攻击状态的僵尸：正在攻击植物时的动画 */
+.zombie.attacking {
+    animation: zombieAttack 0.5s ease-in-out infinite; /* 无限循环的攻击动画 */
+}
+
+/* 冲锋状态的僵尸：足球僵尸冲锋时的效果 */
+.zombie.charging {
+    animation: zombieCharge 0.3s ease-in-out;  /* 冲锋动画 */
+    filter: brightness(1.2);                   /* 增加亮度，突出冲锋效果 */
+}
+
+/* 跳跃状态的僵尸：骑士僵尸跳跃攻击时的动画 */
+.zombie.jumping {
+    animation: zombieJump 1s ease-in-out;      /* 跳跃动画 */
+}
+
+/* 空投降落的僵尸：空投僵尸从天而降的动画 */
+.zombie.bungee-drop {
+    animation: bungeeDrop 1s ease-in;          /* 降落动画 */
+}
+
+/* 踢球状态的僵尸：足球僵尸踢球时的动画 */
+.zombie.kicking {
+    animation: zombieKick 0.5s ease-in-out;   /* 踢球动画 */
+}
+
+/* 僵尸攻击动画：左右摇摆的攻击动作 */
+@keyframes zombieAttack {
+    0%, 100% {
+        transform: translate(-50%, -100%); /* 恢复到脚部对齐的原始位置 */
+    }
+    50% {
+        transform: translate(-55%, -95%);  /* 攻击时，身体轻微左倾和下沉，模拟攻击动作 */
+    }
+}
+
+/* 僵尸冲锋动画：放大和前冲的组合动作 */
+@keyframes zombieCharge {
+    0% {
+        transform: scale(1);                        /* 初始正常大小 */
+    }
+    50% {
+        transform: scale(1.1) translateX(-3px);     /* 放大并向左移动 */
+    }
+    100% {
+        transform: scale(1);                        /* 恢复正常大小 */
+    }
+}
+
+/* 僵尸跳跃动画：骑士僵尸的复杂跳跃轨迹 */
+@keyframes zombieJump {
+    0% {
+        transform: translate(-50%, -50%) translateY(0);                           /* 起始位置 */
+    }
+    25% {
+        transform: translate(-50%, -50%) translateY(-20px) translateX(5px);       /* 起跳阶段：向上向右 */
+    }
+    50% {
+        transform: translate(-50%, -50%) translateY(-30px) translateX(10px);      /* 最高点：继续向上向右 */
+    }
+    75% {
+        transform: translate(-50%, -50%) translateY(-10px) translateX(-15px);      /* 下降阶段：向下向左 */
+    }
+    100% {
+        transform: translate(-50%, -50%) translateY(0) translateX(-20px);         /* 落地：回到地面，向左位移 */
+    }
+}
+
+/* 空投僵尸降落动画：从天空降落到地面的过程 */
+@keyframes bungeeDrop {
+    0% {
+        transform: translate(-50%, -50%) translateY(-100px) scale(0.5);   /* 起始：在屏幕上方，缩小 */
+        opacity: 0.7;                               /* 半透明状态 */
+    }
+    70% {
+        transform: translate(-50%, -50%) translateY(0) scale(1.1);        /* 降落到地面：稍微放大 */
+        opacity: 1;                                 /* 完全不透明 */
+    }
+    100% {
+        transform: translate(-50%, -50%) translateY(0) scale(1);          /* 最终：正常大小 */
+        opacity: 1;                                 /* 完全不透明 */
+    }
+}
+
+/* 僵尸踢球动画：足球僵尸踢球时的动作 */
+@keyframes zombieKick {
+    0% {
+        transform: translate(-50%, -50%) scale(1);                        /* 初始正常大小 */
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(0.9) translateX(100px);     /* 踢球瞬间：放大并向后移动 */
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);            /* 恢复正常大小，并因后坐力后退一小段距离 */
+    }
+}
+
+/* 足球旋转动画：足球在空中飞行时的旋转效果 */
+@keyframes footballSpin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);    /* 起始角度 */
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);  /* 完整旋转一圈 */
+    }
+}
+
+/* 剑效果样式：剑士僵尸攻击时的剑视觉效果 */
+.sword-effect {
+    position: absolute;
+    z-index: 30;                                /* 在僵尸之上 */
+    pointer-events: none;                       /* 不响应鼠标事件 */
+    animation: swordSlash 0.3s ease-out forwards; /* 剑斩击动画 */
+}
+
+/* 剑斩击动画：剑出现并快速消失的效果 */
+/* 剑斩击动画：剑出现并快速消失的效果 */
+@keyframes swordSlash {
+    0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);  /* 起始：缩小并倾斜 */
+        opacity: 0;                                                  /* 完全透明 */
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(-45deg);    /* 中期：放大并回正 */
+        opacity: 1;                                                  /* 完全不透明 */
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.8) rotate(-135deg);     /* 结束：正常大小并稍微倾斜 */
+        opacity: 0;                                                  /* 完全透明 */
+    }
+}
+
+/* 骑士挥剑效果样式：骑士僵尸跳跃攻击时的挥剑视觉效果 */
+.knight-sword-effect {
+    position: absolute !important;
+    font-size: 180px !important;                        /* 骑士剑的大小，使用!important确保优先级 */
+    z-index: 30;                                        /* 在僵尸之上 */
+    pointer-events: none;                               /* 不响应鼠标事件 */
+    animation: knightSwordSlash 0.4s ease-out forwards; /* 骑士挥剑动画 */
+    width: auto !important;                             /* 自动宽度 */
+    height: auto !important;                            /* 自动高度 */
+    background: none !important;                        /* 无背景色 */
+    border-radius: 0 !important;                        /* 无圆角 */
+    box-shadow: none !important;                        /* 无阴影 */
+}
+
+/* 骑士挥剑动画：更强烈的挥剑效果 */
+/* 骑士挥剑动画：更强烈的挥剑效果 */
+@keyframes knightSwordSlash {
+    0% {
+        transform: translate(-50%, -50%) scale(0.3) rotate(0deg);  /* 起始：很小并大幅倾斜 */
+        opacity: 0;                                                  /* 完全透明 */
+    }
+    30% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(30deg);  /* 前期：快速放大并旋转 */
+        opacity: 1;                                                  /* 完全不透明 */
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(1.8) rotate(105deg);   /* 中后期：继续旋转挥砍 */
+        opacity: 0.9;                                                /* 稍微透明 */
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1) rotate(135deg);     /* 结束：正常大小并大幅倾斜 */
+        opacity: 0;                                                  /* 完全透明 */
+    }
+}
+
+/* 锤子效果样式：巨人僵尸攻击时的锤子视觉效果 */
+.hammer-effect {
+    position: absolute !important;
+    font-size: 30px !important;                        /* 锤子的大小，使用!important确保优先级 */
+    z-index: 30;                                        /* 在僵尸之上 */
+    pointer-events: none;                               /* 不响应鼠标事件 */
+    animation: hammerSmash 0.5s ease-out forwards;      /* 锤子重击动画 */
+    width: auto !important;                             /* 自动宽度 */
+    height: auto !important;                            /* 自动高度 */
+    background: none !important;                        /* 无背景色 */
+    border-radius: 0 !important;                        /* 无圆角 */
+    box-shadow: none !important;                        /* 无阴影 */
+}
+
+/* 锤子重击动画：强力的锤击效果 */
+@keyframes hammerSmash {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8) rotate(45deg) translateY(-20px);  /* 起始：缩小、倾斜、高举 */
+        opacity: 0;                                                                    /* 完全透明 */
+    }
+    40% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg) translateY(-5px);   /* 前期：快速放大、轻微倾斜、下降 */
+        opacity: 1;                                                                    /* 完全不透明 */
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(1.8) rotate(-45deg) translateY(5px);      /* 中期：继续下砸、轻微反向倾斜 */
+        opacity: 1;                                                                    /* 完全不透明 */
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1) rotate(-135deg) translateY(0px);     /* 结束：稍微缩小、倾斜、回到原位 */
+        opacity: 0;                                                                    /* 完全透明 */
+    }
+}
+
+/* 女武神挥刀效果 */
+.valkyrie-knife-effect {
+    position: absolute;
+    z-index: 30;
+    pointer-events: none;
+    transform-origin: top right;
+    animation: valkyrieKnifeSwing 0.3s ease-out forwards;
+}
+
+@keyframes valkyrieKnifeSwing {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8) rotate(-60deg);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-40%, -60%) scale(1.2) rotate(45deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-30%, -70%) scale(0.8) rotate(90deg);
+        opacity: 0;
+    }
+}
+
+/* 子弹样式：植物发射的攻击子弹 */
+.projectile {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;                                 /* 圆形子弹 */
+    z-index: 25;                                        /* 在植物和僵尸之上 */
+    pointer-events: none;                               /* 不响应鼠标事件 */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.projectile.pea {
+    position: absolute; /* 允许伪元素叠加高光 */
+    background: radial-gradient(circle at 35% 30%, #f5ffe8 0%, #65ad49 30%, #338d2b 60%, #0c4a19 100%);
+    box-shadow: 0 6px 12px rgba(20, 80, 28, 0.18), inset 0 0 15px rgba(255, 255, 255, 0.35);
+    overflow: visible;
+    animation: peaSheen 1.2s ease-in-out infinite alternate;
+}
+
+.projectile.pea::before,
+.projectile.pea::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+.projectile.pea::before {
+    width: 55%;
+    height: 55%;
+    left: 18%;
+    top: 12%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+    filter: blur(1px);
+    opacity: 0.5;
+}
+
+.projectile.pea::after {
+    width: 30%;
+    height: 70%;
+    right: 8%;
+    top: 18%;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+    transform: rotate(-10deg);
+    opacity: 0.7;
+    animation: peaGlint 0.8s linear infinite;
+}
+
+@keyframes peaSheen {
+    0% {
+        filter: brightness(0.95) saturate(0.95);
+    }
+    100% {
+        filter: brightness(1.05) saturate(1.05);
+    }
+}
+
+@keyframes peaGlint {
+    0% {
+        transform: rotate(-10deg) translate3d(0, 0, 0);
+        opacity: 0.4;
+    }
+    50% {
+        transform: rotate(-5deg) translate3d(-2px, -4px, 0);
+        opacity: 0.75;
+    }
+    100% {
+        transform: rotate(-10deg) translate3d(0, 0, 0);
+        opacity: 0.4;
+    }
+}
+
+.projectile.snowpea-emergency-weapon {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s linear;
+    overflow: visible;
+}
+
+.projectile.snowpea-emergency-weapon::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 60%;
+    height: 24%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at 0% 50%, rgba(173, 216, 230, 0.5), transparent 70%);
+    filter: blur(6px);
+    pointer-events: none;
+    animation: snowpeaWeaponTrail 0.9s cubic-bezier(0.3, 0.3, 0.4, 1) forwards;
+}
+
+.projectile.snowpea-emergency-weapon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    animation: snowpeaWeaponGrow 0.9s cubic-bezier(0.3, 0.6, 0.4, 1) forwards;
+}
+
+@keyframes snowpeaWeaponGrow {
+    0% {
+        transform: scale(0.55);
+        opacity: 0.15;
+        filter: blur(6px);
+    }
+    33% {
+        transform: scale(0.85);
+        opacity: 0.45;
+        filter: blur(4px);
+    }
+    66% {
+        transform: scale(1.1);
+        opacity: 0.75;
+        filter: blur(2px);
+    }
+    100% {
+        transform: scale(1.35);
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+@keyframes snowpeaWeaponTrail {
+    0% {
+        transform: translate(-50%, -50%) scaleX(0.6);
+        opacity: 0.35;
+        filter: blur(6px);
+    }
+    33% {
+        transform: translate(-50%, -50%) scaleX(1);
+        opacity: 0.5;
+        filter: blur(4px);
+    }
+    66% {
+        transform: translate(-50%, -50%) scaleX(1.4);
+        opacity: 0.65;
+        filter: blur(2px);
+    }
+    100% {
+        transform: translate(-50%, -50%) scaleX(1.8);
+        opacity: 0;
+        filter: blur(0);
+    }
+}
+
+.gatling-airstrike {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    pointer-events: none;
+    z-index: 45;
+    transform-origin: center bottom;
+    animation: gatlingAirstrikeDrop 1s ease-out forwards;
+}
+
+.gatling-airstrike img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@keyframes gatlingAirstrikeDrop {
+    0% {
+        transform: translate(-50%, -220%) scale(0.6);
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -100%) scale(1);
+        opacity: 1;
+    }
+}
+
+.gatling-airstrike-impact {
+    position: absolute;
+    pointer-events: none;
+    z-index: 36;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 120, 0, 0.8);
+    background: radial-gradient(circle, rgba(255, 200, 0, 0.25) 0%, rgba(255, 120, 0, 0.15) 55%, transparent 75%);
+    animation: gatlingImpactPulse 1.8s ease-out forwards;
+    box-shadow: 0 0 12px rgba(255, 140, 0, 0.5);
+}
+
+@keyframes gatlingImpactPulse {
+    0% {
+        transform: translate(-50%, -50%) scale(0.4);
+        opacity: 0.85;
+    }
+    60% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.45;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.25);
+        opacity: 0;
+        box-shadow: 0 0 30px rgba(255, 80, 0, 0.15);
+    }
+}
+
+.double-shield-effect {
+    position: absolute;
+    pointer-events: none;
+    z-index: 37;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: doubleShieldScale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+               doubleShieldFade 3s ease-out 0.5s forwards;
+}
+
+.double-shield-effect img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 12px rgba(120, 240, 255, 0.8));
+}
+
+@keyframes doubleShieldScale {
+    0% {
+        transform: translate(-50%, -50%) scale(0.05);
+        opacity: 0;
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(1.15);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes doubleShieldFade {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.double-weapon-spin {
+    position: absolute;
+    pointer-events: none;
+    z-index: 44;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    transform-origin: center;
+    animation: doubleWeaponSpin 1s cubic-bezier(0.3, 0.95, 0.4, 1.1) forwards;
+}
+
+.double-weapon-spin img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 18px rgba(255, 238, 140, 0.9)) drop-shadow(0 0 28px rgba(255, 168, 32, 0.7));
+}
+
+@keyframes doubleWeaponSpin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+    60% {
+        transform: translate(-50%, -50%) rotate(90deg) scale(2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(270deg) scale(3);
+        opacity: 1;
+    }
+}
+
+.double-weapon-rings {
+    position: absolute;
+    pointer-events: none;
+    z-index: 38;
+    transform: translate(-50%, -50%);
+    animation: doubleWeaponRingFade 2s ease-out forwards;
+}
+
+.double-weapon-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 220, 120, 0.9);
+    box-shadow: 0 0 18px rgba(255, 215, 130, 0.7), inset 0 0 12px rgba(255, 255, 200, 0.4);
+}
+
+.double-weapon-ring.inner {
+    width: 65%;
+    height: 65%;
+    border-width: 2px;
+    box-shadow: 0 0 12px rgba(255, 235, 165, 0.5), inset 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+.double-weapon-ring.outer {
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes doubleWeaponRingFade {
+    0% {
+        transform: translate(-50%, -50%) scale(0.75);
+        opacity: 0.9;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.25);
+        opacity: 0;
+    }
+}
+
+/* 足球子弹样式：足球僵尸踢出的足球 */
+.football-projectile {
+    position: absolute;
+    z-index: 25;                                        /* 与普通子弹同层 */
+    pointer-events: none;                               /* 不响应鼠标事件 */
+    /* animation 属性现在负责旋转和位移 */
+    animation: footballSpin 0.5s linear infinite;       /* 无限旋转动画 */
+    width: 150px;                                        /* 明确设置容器宽度 */
+    height: 150px;                                       /* 明确设置容器高度 */
+    display: flex;                                      /* 使用Flexbox布局来居中内部图片 */
+    justify-content: center;                            /* 水平居中 */
+    align-items: center;                                /* 垂直居中 */
+}
+
+.football-projectile img {
+    width: 100%; /* 图片宽度充满容器 */
+    height: 100%;/* 图片高度充满容器 */
+}
+
+/* 阳光样式：可收集的阳光对象 */
+.sun {
+    position: absolute;
+    z-index: 30;                                        /* 在所有游戏对象之上 */
+    cursor: pointer;                                    /* 鼠标指针变为手型 */
+    pointer-events: auto;                               /* 响应鼠标点击事件 */
+    width: 120px;
+    height: 120px;
+    background-image: url('sun_wave.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* 组合动画：下落动画和闪烁动画 */
+    animation: sunFall 2s ease-in-out, sunGlow 1s ease-in-out infinite alternate;
+}
+
+/* 阳光下落动画：阳光从天空掉落的过程 */
+@keyframes sunFall {
+    0% {
+        transform: translateY(-30px);   /* 起始位置：屏幕上方30像素 */
+        opacity: 0;                     /* 初始透明 */
+    }
+    20% {
+        opacity: 1;                     /* 快速变为不透明 */
+    }
+    100% {
+        transform: translateY(0);       /* 最终位置：目标位置 */
+        opacity: 0.9;                   /* 稍微透明，便于识别 */
+    }
+}
+
+/* 阳光闪烁动画：阳光的亮度变化效果 */
+@keyframes sunGlow {
+    0% {
+        filter: brightness(1);          /* 正常亮度 */
+    }
+    100% {
+        filter: brightness(1.1);        /* 增加10%亮度 */
+    }
+}
+
+/* 爆炸效果样式：樱桃炸弹等爆炸性植物的视觉效果 */
+.explosion {
+    position: absolute;
+    font-size: 40px;
+    z-index: 35;                                /* 在大部分对象之上 */
+    pointer-events: none;                       /* 不响应鼠标事件 */
+    animation: explode 1s ease-out forwards;    /* 爆炸动画，只执行一次 */
+}
+
+/* 偷取效果样式：空投僵尸偷取植物时的提示文字 */
+.steal-effect {
+    position: absolute;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ff4444;                             /* 红色警告文字 */
+    z-index: 40;                                /* 在所有对象之上 */
+    pointer-events: none;                       /* 不响应鼠标事件 */
+    animation: stealAlert 2s ease-out forwards; /* 警告动画，只执行一次 */
+    background: rgba(255, 255, 255, 0.9);       /* 半透明白色背景 */
+    padding: 5px 10px;
+    border-radius: 10px;                        /* 圆角边框 */
+    border: 2px solid #ff4444;                  /* 红色边框 */
+}
+
+/* 冲击波效果样式：巨人僵尸攻击时的冲击波视觉效果 */
+.shockwave {
+    position: absolute;
+    font-size: 50px;
+    z-index: 35;                                    /* 与爆炸效果同层 */
+    pointer-events: none;                           /* 不响应鼠标事件 */
+    animation: shockwaveExpand 1s ease-out forwards; /* 冲击波扩散动画 */
+}
+
+/* 爆炸动画：从小到大扩散并逐渐消失的爆炸效果 */
+@keyframes explode {
+    0% {
+        transform: translate(-50%, -50%) scale(0);        /* 起始：大小为0 */
+        opacity: 1;                 /* 完全不透明 */
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.5);      /* 中期：放大到1.5倍 */
+        opacity: 0.8;               /* 稍微透明 */
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2.5);      /* 结束：放大到2.5倍 */
+        opacity: 0;                 /* 完全透明 */
+    }
+}
+
+/* 偷取警告动画：向上飞起并逐渐消失的警告文字效果 */
+@keyframes stealAlert {
+    0% {
+        transform: translateY(0) scale(0.5);    /* 起始：正常位置，缩小 */
+        opacity: 1;                             /* 完全不透明 */
+    }
+    50% {
+        transform: translateY(-20px) scale(1);  /* 中期：向上移动，正常大小 */
+        opacity: 1;                             /* 完全不透明 */
+    }
+    100% {
+        transform: translateY(-40px) scale(0.8); /* 结束：继续向上，稍微缩小 */
+        opacity: 0;                              /* 完全透明 */
+    }
+}
+
+/* 冲击波扩散动画：从中心向外扩散的冲击波效果 */
+@keyframes shockwaveExpand {
+    0% {
+        transform: translate(-50%, -100%) scale(0.5);      /* 起始：缩小到0.5倍 */
+        opacity: 0.8;                 /* 完全不透明 */
+    }
+    10% {
+        transform: translate(-50%, -100%) scale(2);        /* 中期：放大到2倍 */
+        opacity: 0.8;               /* 稍微透明 */
+    }
+    100% {
+        transform: translate(-50%, -100%) scale(3.5);      /* 结束：放大到3.5倍 */
+        opacity: 0;                 /* 完全透明 */
+    }
+}
+
+/* 血量条：显示植物和僵尸生命值的可视化指示器 */
+.health-bar {
+    position: absolute;
+    top: -8px;                          /* 位于对象上方8像素 */
+    left: 50%;
+    transform: translateX(-50%);        /* 水平居中对齐 */
+    width: 30px;
+    height: 4px;
+    background: rgba(244, 67, 54, 0.3); /* 半透明红色背景 */
+    border-radius: 2px;                 /* 圆角边框 */
+    overflow: hidden;                   /* 隐藏超出部分 */
+}
+
+/* 血量填充：血量条中表示当前生命值的绿色部分 */
+.health-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A); /* 绿色渐变背景 */
+    border-radius: 2px;                                   /* 圆角边框 */
+    transition: width 0.3s ease;                          /* 宽度变化的平滑过渡 */
+    width: 100%;                                          /* 初始宽度为100% */
+}
+
+/* 游戏状态提示：全屏覆盖的状态信息显示层 */
+.game-status {
+    position: fixed;                    /* 固定定位，覆盖整个视窗 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);     /* 半透明黑色遮罩 */
+    display: none;                      /* 默认隐藏 */
+    justify-content: center;            /* 水平居中 */
+    align-items: center;                /* 垂直居中 */
+    z-index: 1000;                      /* 最高层级，确保在所有内容之上 */
+}
+
+/* 状态内容容器：状态提示的白色内容框 */
+.status-content {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;                        /* 圆角边框 */
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* 深色阴影效果 */
+    max-width: 400px;                           /* 最大宽度限制 */
+}
+
+/* 状态标题：状态提示的主标题样式 */
+.status-content h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+    color: #2E7D32;         /* 深绿色文字 */
+}
+
+/* 状态消息：状态提示的详细信息文字 */
+.status-content p {
+    font-size: 1.1em;
+    color: #666;            /* 灰色文字 */
+    margin-bottom: 20px;
+    line-height: 1.5;       /* 行高1.5倍，提高可读性 */
+}
+
+/* 响应式设计：针对移动设备和小屏幕的样式适配 */
+@media (max-width: 768px) {
+    /* 游戏头部：在小屏幕上改为垂直布局 */
+    .game-header {
+        flex-direction: column;     /* 垂直排列元素 */
+        gap: 10px;                  /* 元素间距 */
+        padding: 10px;              /* 减少内边距 */
+    }
+    
+    /* 植物选择栏：在小屏幕上允许换行 */
+    .plant-selector {
+        flex-wrap: wrap;            /* 允许元素换行 */
+        gap: 5px;                   /* 减少元素间距 */
+    }
+    
+    /* 植物卡片：在小屏幕上缩小尺寸 */
+    .plant-card {
+        width: 60px;                /* 减小宽度 */
+        height: 80px;               /* 减小高度 */
+    }
+    
+    /* 植物图标：在小屏幕上缩小尺寸 */
+    .plant-icon {
+        width: 24px;               /* 减小图标宽度 */
+        height: 24px;              /* 减小图标高度 */
+    }
+    
+    /* 植物名称：在小屏幕上缩小字体 */
+    .plant-name {
+        font-size: 8px;            /* 减小文字大小 */
+    }
+    
+    /* 植物费用：在小屏幕上缩小字体 */
+    .plant-cost {
+        font-size: 10px;           /* 减小文字大小 */
+    }
+    
+    /* 植物对象：在小屏幕上缩小显示 */
+    .plant {
+        width: 60px;               /* 减小植物宽度 */
+        height: 60px;              /* 减小植物高度 */
+    }
+    
+    /* 僵尸对象：在小屏幕上缩小显示 */
+    .zombie {
+        width: 80px;               /* 减小僵尸宽度 */
+        height: 80px;              /* 减小僵尸高度 */
+    }
+}
+
+/* 游戏模式选择弹窗 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+    background: url('wood_plank.png') repeat; /* 木板纹理背景 */
+    padding: 40px;
+    border-radius: 20px;
+    border: 5px solid #8B4513; /* 深棕色木质边框 */
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 600px;
+    animation: modalPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPopIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-content h2 {
+    font-size: 2.5em;
+    color: #fff;
+    text-shadow: 2px 2px 4px #000;
+    margin-bottom: 30px;
+    font-family: 'Comic Sans MS', 'Marker Felt', sans-serif; /* 卡通字体 */
+}
+
+.modal-options {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.mode-card {
+    background: linear-gradient(145deg, #fdf5e6, #f5deb3); /* 亚麻色渐变 */
+    border: 3px solid #D2B48C; /* 棕褐色边框 */
+    border-radius: 15px;
+    padding: 20px;
+    width: 250px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.mode-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    border-color: #CD853F; /* 秘鲁色 */
+}
+
+.mode-icon {
+    width: 80px;
+    height: 80px;
+}
+
+.mode-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.mode-text h3 {
+    font-size: 1.5em;
+    color: #8B4513; /* 深棕色 */
+    margin-bottom: 10px;
+}
+
+.mode-text p {
+    font-size: 0.9em;
+    color: #A0522D; /* 黄土赭色 */
+    line-height: 1.4;
+}
+
+/* 金色木棒挥舞效果 */
+.golden-stick-effect {
+    position: absolute;
+    width: 500px; /* 根据图片实际尺寸调整 */
+    height: 500px; /* 根据图片实际尺寸调整 */
+    z-index: 25; /* 确保在僵尸上方，但在最顶层UI之下 */
+    pointer-events: none; /* 不响应鼠标事件 */
+    transform-origin: center; /* 旋转中心点在图片中心 */
+    animation: swing-attack 0.3s ease-out forwards;
+}
+
+.golden-stick-effect img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 挥舞攻击动画 */
+@keyframes swing-attack {
+    0% {
+        transform: rotate(0deg) scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: rotate(-45deg) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(-135deg) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* 骑士挥戟效果 */
+.knight-halberd-swing {
+    position: absolute;
+    z-index: 30;
+    pointer-events: none;
+    transform-origin: center;
+    animation: knightHalberdSwing 1s linear forwards;
+}
+
+.knight-halberd-swing img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.35));
+}
+
+/* 骑士挥戟动画：从左上抬起到右下劈砍 */
+@keyframes knightHalberdSwing {
+    0% {
+        transform: translate(-50%, -50%) rotate(-90deg) scale(0.8);
+        opacity: 0.8;
+    }
+    60% {
+        transform: translate(-50%, -50%) rotate(-120deg) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(-225deg) scale(1.5);
+        opacity: 1;
+    }
+}
+
+/* 剑士僵尸特殊攻击的剑效果 */
+.special-sword-effect {
+    position: absolute;
+    z-index: 45;
+    pointer-events: none;
+    transform-origin: center;
+    filter: drop-shadow(0 0 20px #ff0000) brightness(1.5) saturate(2.0);
+    opacity: 0.9;
+    /* 应用专门的CSS动画 */
+    animation: specialSwordSlash 0.3s linear forwards;
+}
+
+/* 剑士僵尸特殊攻击的专用动画 */
+@keyframes specialSwordSlash {
+    from {
+        /* 初始状态：居中，无旋转 */
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        /* 最终状态：居中，旋转-135度 */
+        transform: translate(-50%, -50%) rotate(-135deg);
+    }
+}
+
+/* 剑士僵尸强化效果样式 */
+@keyframes enhanceFloat {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(-50%, -70%) scale(1.2);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -90%) scale(0.8);
+    }
+}
+
+.swordsman-enhance-effect {
+    animation: enhanceFloat 2s ease-out forwards;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 强化后的剑士僵尸发光效果 */
+.zombie.enhanced {
+    filter: drop-shadow(0 0 8px #ff4444);
+}
+
+/* 强化后的剑效果增强 */
+.sword-effect.enhanced {
+    filter: drop-shadow(0 0 10px #ff4444) brightness(1.2);
+}
+
+/* 剑士僵尸特殊攻击动画效果 */
+
+/* 特殊攻击警告效果 */
+.special-attack-warning {
+    animation: warningPulse 1s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+/* 特殊冲击波效果 */
+.special-shockwave {
+    opacity: 0.8;
+}
+
+/* 剑士僵尸强化状态 */
+.enhanced {
+    /* 同时应用“摇摆”和“发光”两个动画，用逗号隔开 */
+    animation: zombieSway 2.5s ease-in-out infinite, enhancedGlow 2s ease-in-out infinite;
+}
+
+@keyframes enhancedGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 5px #ff4444);
+    }
+    50% {
+        filter: drop-shadow(0 0 15px #ff4444) brightness(1.1);
+    }
+}
+
+/* 女武神猩红腐败种子效果 */
+.zombie.scarlet-rot-seed {
+    animation: scarlet-rot-seed-pulse 1.5s ease-in-out infinite, zombieSway 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px #ff0000) brightness(1.2);
+}
+
+@keyframes scarlet-rot-seed-pulse {
+    0%, 100% {
+        transform: translate(-50%, -100%) scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translate(-50%, -100%) scale(1.1);
+        opacity: 1;
+    }
+}
+
+/* 女武神猩红腐败爆炸效果 */
+.scarlet-rot-bloom {
+    position: absolute;
+    z-index: 50;
+    pointer-events: none;
+    animation: scarlet-rot-bloom-effect 5s ease-out forwards;
+}
+
+@keyframes scarlet-rot-bloom-effect {
+    0% {
+        transform: translate(-50%, -100%) scale(0.2);
+        opacity: 0.5;
+        filter: brightness(1);
+    }
+    10% {
+        transform: translate(-50%, -100%) scale(2.5);
+        opacity: 0.8;
+        filter: brightness(2);
+    }
+    20% {
+        transform: translate(-50%, -100%) scale(2.6);
+        opacity: 0.6;
+        filter: brightness(1);
+    }
+    100% {
+        transform: translate(-50%, -100%) scale(3);
+        opacity: 0;
+        filter: brightness(1);
+    }
+}
+
+/* 巨人僵尸特殊攻击准备状态 */
+.zombie.special-attacking {
+    animation: gargantuarSpecialCharge 3s ease-in-out infinite;
+}
+
+@keyframes gargantuarSpecialCharge {
+    0% {
+        filter: drop-shadow(0 0 8px #b300ff); /* 紫色光晕 */
+        transform: translate(-50%, -100%) rotate(0deg);
+    }
+    40% {
+        filter: drop-shadow(0 0 8px #b300ff); /* 金色光晕 */
+        transform: translate(-50%, -100%) rotate(15deg) scale(1.8); /* 蓄力后仰 */
+    }
+    50% {
+        filter: drop-shadow(0 0 20px #b300ff) brightness(1.3);
+        transform: translate(-50%, -100%) rotate(-10deg) scale(1.2); /* 猛砸 */
+    }
+    100% {
+        filter: drop-shadow(0 0 8px #b300ff); /* 金色光晕 */
+        transform: translate(-50%, -100%) rotate(0deg) scale(1);
+    } 
+}
+
+/* 特殊锤子挥舞动画 */
+.hammer-effect.special-hammer {
+    animation: specialHammerSwing 0.3s ease-in-out forwards;
+}
+
+@keyframes specialHammerSwing {
+    0% {
+        transform: translate(-50%, -50%) rotate(60deg) scale(1.2);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(-45deg) scale(1.8);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(-135deg) scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* 落雷效果动画 */
+.lightning-effect {
+    animation: lightningFlash 5s forwards;
+}
+
+@keyframes lightningFlash {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(0.5);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -100%) scale(1.8);
+        filter: brightness(3);
+    }
+    40% {
+        opacity: 0.8;
+        transform: translate(-50%, -100%) scale(1.5);
+        filter: brightness(1.5);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(1.2);
+    }
+}
+
+/* 女武神普通攻击挥刀效果（独立，不复用冲刺） */
+.valkyrie-knife-effect-normal {
+    position: absolute;
+    z-index: 30;
+    pointer-events: none;
+    transform-origin: top right;
+    animation: valkyrieKnifeSwingNormal 0.3s ease-out forwards;
+
+    /* 可调尺寸参数（默认使用图片原始尺寸）。可在元素或更高优先级样式中覆盖这两个变量 */
+    --vk-knife-width: 200px;
+    --vk-knife-height: 200px;
+
+    /* 同步容器尺寸，便于定位与碰撞范围可视化（如不需要可仅覆盖 img 的变量） */
+    width: var(--vk-knife-width, auto);
+    height: var(--vk-knife-height, auto);
+}
+
+.valkyrie-knife-effect-normal img {
+    width: var(--vk-knife-width, auto);
+    height: var(--vk-knife-height, auto);
+    object-fit: contain;
+}
+
+@keyframes valkyrieKnifeSwingNormal {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8) rotate(-60deg);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-40%, -60%) scale(1.2) rotate(45deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-30%, -70%) scale(0.8) rotate(90deg);
+        opacity: 0;
+    }
+}
