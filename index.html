@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zombie Invasion: Infinite Souls</title>
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="special-effects.css">
+    <link rel="stylesheet" href="enhance-effects.css">
+</head>
+<body>
+    <!-- 游戏主容器 -->
+    <div class="game-container">
+        <!-- 游戏头部信息：显示阳光数量、波次信息和游戏控制按钮 -->
+        <div class="game-header">
+            <div class="sun-counter">
+                <span class="sun-icon">☀️</span>
+                <span id="sunCount">150</span>
+            </div>
+            <!-- 波次信息：显示当前波次、剩余僵尸数量和最高记录 -->
+            <div class="wave-info">
+                <div>Current Wave: <span id="currentWave">1</span></div>
+                <div>Remaining Zombies: <span id="remainingZombies">0</span></div>
+                <div>Highest Wave: <span id="highestWave">0</span> Wave</div>
+            </div>
+            <!-- 游戏控制按钮：开始、暂停、重置游戏 -->
+            <div class="game-controls">
+                <button id="startBtn" class="btn">Start Game</button>
+                <button id="pauseBtn" class="btn hidden">Pause</button>
+                <button id="restartBtn" class="btn">Restart Game</button>
+            </div>
+        </div>
+
+        <!-- 植物选择栏：玩家可以选择不同类型的植物进行种植 -->
+        <div class="plant-selector">
+            <!-- 左滚动按钮：用于滚动查看更多植物选项 -->
+            <button class="scroll-btn scroll-left" id="scrollLeft">◀</button>
+            <!-- 植物卡片容器：包含所有可选择的植物卡片 -->
+            <div class="plant-cards-container" id="plantCardsContainer">
+                <!-- 向日葵植物卡片：生产阳光的基础植物 -->
+                <div class="plant-card" data-plant="sunflower" data-cost="50">
+                    <div class="plant-icon"><img src="sunflower.png" alt="向日葵"></div>
+                    <div class="plant-name">Melina</div>
+                    <div class="plant-cost">50</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+                <!-- 豌豆射手植物卡片：基础攻击植物，发射豌豆攻击僵尸 -->
+                <div class="plant-card" data-plant="peashooter" data-cost="100">
+                    <div class="plant-icon"><img src="pea_shooter.png" alt="豌豆射手"></div>
+                    <div class="plant-name">Pea Shooter</div>
+                    <div class="plant-cost">100</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+                <!-- 双发射手植物卡片：发射两颗豌豆的强化攻击植物 -->
+                <div class="plant-card" data-plant="repeater" data-cost="200">
+                    <div class="plant-icon"><img src="double_shooter.png" alt="双发射手"></div>
+                    <div class="plant-name">Forge Knight</div>
+                    <div class="plant-cost">200</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+                <div class="plant-card" data-plant="snowpea" data-cost="175">
+                    <div class="plant-icon"><img src="ice_shooter.png" alt="寒冰豌豆"></div>
+                    <div class="plant-name">Rani</div>
+                    <div class="plant-cost">175</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+                <div class="plant-card" data-plant="torchwood" data-cost="175">
+                    <div class="plant-icon"><img src="tree_stump.png" alt="火炬树桩"></div>
+                    <div class="plant-name">Golden Tree</div>
+                    <div class="plant-cost">175</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+                <div class="plant-card" data-plant="cherrybomb" data-cost="150">
+                    <div class="plant-icon"><img src="cherry_bomb.png" alt="樱桃炸弹"></div>
+                    <div class="plant-name">Midra</div>
+                    <div class="plant-cost">150</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+                <div class="plant-card" data-plant="spikeweed" data-cost="100">
+                    <div class="plant-icon"><img src="ground_spikes.png" alt="地刺"></div>
+                    <div class="plant-name">Black Knife Tiche</div>
+                    <div class="plant-cost">100</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+                <div class="plant-card" data-plant="wallnut" data-cost="50">
+                    <div class="plant-icon"><img src="wall_nut.png" alt="坚果墙"></div>
+                    <div class="plant-name">Pot Boy</div>
+                    <div class="plant-cost">50</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+                <div class="plant-card" data-plant="gatlingpea" data-cost="250">
+                    <div class="plant-icon"><img src="gatling_pea.png" alt="机枪豌豆"></div>
+                    <div class="plant-name">Maliketh</div>
+                    <div class="plant-cost">250</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+                <div class="plant-card" data-plant="pumpkin" data-cost="125">
+                    <div class="plant-icon"><img src="pumpkin_shell.png" alt="南瓜套"></div>
+                    <div class="plant-name">Pope Turtle</div>
+                    <div class="plant-cost">125</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+                <div class="plant-card tool-card" data-plant="shovel" data-cost="0">
+                    <div class="plant-icon"><img src="shovel.png" alt="铲子"></div>
+                    <div class="plant-name">Blessing</div>
+                    <div class="plant-cost">锁定</div>
+                    <div class="cooldown-bar"></div>
+                </div>
+            </div>
+            <!-- 右滚动按钮：用于滚动查看更多植物选项 -->
+            <button class="scroll-btn scroll-right" id="scrollRight">▶</button>
+        </div>
+
+        <!-- 游戏场地：主要的游戏区域 -->
+        <div class="game-field">
+            <!-- 草坪背景：提供视觉网格效果 -->
+            <div class="lawn-background"></div>
+            <!-- 游戏网格：5行9列的种植区域 -->
+            <div class="game-grid" id="gameGrid">
+                <!-- 5行9列网格将通过JavaScript动态生成 -->
+            </div>
+            <!-- 实体层：所有动态游戏对象的容器 -->
+            <div class="entities-layer" id="entitiesLayer">
+                <!-- 动态实体层：植物、僵尸、子弹、阳光等游戏对象 -->
+            </div>
+        </div>
+
+        <!-- 游戏状态提示：显示游戏开始、暂停、胜利、失败等状态信息 -->
+        <div class="game-status" id="gameStatus">
+            <div class="status-content">
+                <h2 id="statusTitle">准备开始</h2>
+                <p id="statusMessage">点击开始游戏按钮开始第一波僵尸攻击</p>
+                <button id="statusBtn" class="btn hidden">继续</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入游戏主逻辑JavaScript文件 -->
+    <script src="script.js"></script>
+
+    <!-- 游戏模式选择弹窗 -->
+    <div id="mode-selection-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Select Game Mode</h2>
+            <div class="modal-options">
+                <div id="survivalBtn" class="mode-card">
+                    <div class="mode-icon"><img src="sunflower.png" alt="生存模式"></div>
+                    <div class="mode-text">
+                        <h3>Survival Mode</h3>
+                        <p>Classic tower defense challenge, defend against waves of zombies!</p>
+                    </div>
+                </div>
+                <div id="testBtn" class="mode-card">
+                    <div class="mode-icon"><img src="zombie.png" alt="测试模式"></div>
+                    <div class="mode-text">
+                        <h3>Test Mode</h3>
+                        <p>Infinite sunlight and no cooldown, test your strategy!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
